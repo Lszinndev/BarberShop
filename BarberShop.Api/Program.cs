@@ -11,13 +11,25 @@ var cs = builder.Configuration.GetConnectionString("Default")!;
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseMySql(cs, new MySqlServerVersion(new Version(8, 0, 36))));
 
+builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
+
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors(builder => builder
+    .WithOrigins("http://localhost:3000")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+app.UseRouting();
 
 // =========================================
 // ===== TESTE DE CONEXÃO ==================
@@ -54,7 +66,7 @@ app.MapPut("/api/clients/{id}", async (int id, Client input, AppDbContext db) =>
     if (client is null) return Results.NotFound();
 
     client.Nome_Cliente = input.Nome_Cliente;
-    client.Numero_Telefone = input.Numero_Telefone;
+    client.Telefone_Celular = input.Telefone_Celular;
 
     await db.SaveChangesAsync();
     return Results.NoContent();

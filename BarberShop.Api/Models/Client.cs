@@ -11,6 +11,6 @@ public class Client
     [Column("nome_Cliente")]
     public string Nome_Cliente { get; set; } = string.Empty;
 
-    [Column("numero_Telefone")]
-    public string Numero_Telefone { get; set; } = string.Empty;
+    [Column("telefone_Celular")]
+    public string Telefone_Celular { get; set; } = string.Empty;
 }

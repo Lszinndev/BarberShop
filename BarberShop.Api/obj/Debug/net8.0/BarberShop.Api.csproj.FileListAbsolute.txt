@@ -104,3 +104,4 @@
 /Users/lorenzinn/barbershop/BarberShop.Api/obj/Debug/net8.0/BarberShop.Api.pdb
 /Users/lorenzinn/barbershop/BarberShop.Api/obj/Debug/net8.0/BarberShop.Api.genruntimeconfig.cache
 /Users/lorenzinn/barbershop/BarberShop.Api/obj/Debug/net8.0/ref/BarberShop.Api.dll
+/Users/lorenzinn/barbershop/BarberShop.Api/obj/Debug/net8.0/BarberShop.Api.sourcelink.json
