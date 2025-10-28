@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/lorenzinn/barbershop/BarberShop.Api/BarberShop.Api.csproj": {}
+    "/Users/lorenzinn/BarberShop/BarberShop.Api/BarberShop.Api.csproj": {}
   },
   "projects": {
-    "/Users/lorenzinn/barbershop/BarberShop.Api/BarberShop.Api.csproj": {
+    "/Users/lorenzinn/BarberShop/BarberShop.Api/BarberShop.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lorenzinn/barbershop/BarberShop.Api/BarberShop.Api.csproj",
+        "projectUniqueName": "/Users/lorenzinn/BarberShop/BarberShop.Api/BarberShop.Api.csproj",
         "projectName": "BarberShop.Api",
-        "projectPath": "/Users/lorenzinn/barbershop/BarberShop.Api/BarberShop.Api.csproj",
+        "projectPath": "/Users/lorenzinn/BarberShop/BarberShop.Api/BarberShop.Api.csproj",
         "packagesPath": "/Users/lorenzinn/.nuget/packages/",
-        "outputPath": "/Users/lorenzinn/barbershop/BarberShop.Api/obj/",
+        "outputPath": "/Users/lorenzinn/BarberShop/BarberShop.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/lorenzinn/.nuget/NuGet/NuGet.Config"

@@ -9,7 +9,8 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open the local URL printed by the dev server (e.g. http://localhost:3000). By default Create React App
+will try port 3000; if it's busy it will use the next available port (e.g. 3001, 3002).
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
@@ -26,6 +27,24 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+## Backend API configuration
+
+The frontend can call the backend API in two ways during development:
+
+- Using the CRA proxy (recommended for local development): `package.json` contains a `proxy` field
+	that forwards relative requests (like `/api/clients`) to the backend (example `http://localhost:5105`).
+	To use this, do not set `REACT_APP_API_URL` — keep the default relative URLs in the code.
+
+- Pointing directly to the backend by setting an environment variable `REACT_APP_API_URL` (useful for
+	production builds or when you want to bypass the proxy). Set this in a `.env` file at the project root
+	(see `.env.example`). Example:
+
+	REACT_APP_API_URL=http://localhost:5105
+
+When `REACT_APP_API_URL` is set, the app will call that base URL directly. When it's empty/unset, the
+app uses relative paths and the CRA dev server proxy will forward requests to the URL configured in
+`package.json`.
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 

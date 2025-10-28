@@ -9,25 +9,25 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`} 
             onClick={() => setCurrentView('dashboard')}
           >
-            Dashboard
+            Painel
           </li>
           <li 
             className={`nav-item ${currentView === 'clients' ? 'active' : ''}`} 
             onClick={() => setCurrentView('clients')}
           >
-            Clients
+            Clientes
           </li>
           <li 
             className={`nav-item ${currentView === 'schedule' ? 'active' : ''}`} 
             onClick={() => setCurrentView('schedule')}
           >
-            Schedule
+            Agendamentos
           </li>
           <li 
             className={`nav-item ${currentView === 'employers' ? 'active' : ''}`} 
             onClick={() => setCurrentView('employers')}
           >
-            Employers
+            Funcionários
           </li>
         </ul>
       </nav>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5osaDqxLF8c=",
+  "dgSpecHash": "ps1TcFFbg3Y=",
   "success": true,
-  "projectFilePath": "/Users/lorenzinn/barbershop/BarberShop.Api/BarberShop.Api.csproj",
+  "projectFilePath": "/Users/lorenzinn/BarberShop/BarberShop.Api/BarberShop.Api.csproj",
   "expectedPackageFiles": [
     "/Users/lorenzinn/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/lorenzinn/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

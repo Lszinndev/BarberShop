@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// If REACT_APP_API_URL is set (dev or prod), use it. Otherwise use relative
+// paths so the create-react-app dev server proxy (frontend/package.json)
+// can forward requests to the backend during development.
+const defaultBase = process.env.REACT_APP_API_URL && process.env.REACT_APP_API_URL !== ''
+  ? process.env.REACT_APP_API_URL.replace(/\/$/, '') // remove trailing slash
+  : '/';
+
 const apiClient = axios.create({
-  baseURL: '/',
+  baseURL: defaultBase,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -26,6 +33,10 @@ export const api = {
   },
   getSchedules: async () => {
     const response = await apiClient.get('/api/schedules');
+    return response.data;
+  },
+  createSchedule: async (schedule) => {
+    const response = await apiClient.post('/api/schedules', schedule);
     return response.data;
   },
   getEmployers: async () => {

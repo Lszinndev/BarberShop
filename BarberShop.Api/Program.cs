@@ -1,6 +1,7 @@
 using BarberShop.Api.Data;
 using BarberShop.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ===== CONFIGURAÇÃO DO BANCO DE DADOS ====
 // =========================================
 var cs = builder.Configuration.GetConnectionString("Default")!;
-builder.Services.AddDbContext<AppDbContext>(opt =>
+builder.Services.AddDbContext<BarberShop.Api.Data.AppDbContext>(opt =>
     opt.UseMySql(cs, new MySqlServerVersion(new Version(8, 0, 36))));
 
 builder.Services.AddCors();
@@ -41,18 +42,18 @@ app.MapGet("/", () => Results.Json(new { ok = true }));
 // =========================================
 
 // LISTAR CLIENTES
-app.MapGet("/api/clients", async (AppDbContext db) =>
+app.MapGet("/api/clients", async (BarberShop.Api.Data.AppDbContext db) =>
     Results.Ok(await db.Clients.ToListAsync()));
 
 // DETALHAR CLIENTE POR ID
-app.MapGet("/api/clients/{id}", async (int id, AppDbContext db) =>
+app.MapGet("/api/clients/{id}", async (int id, BarberShop.Api.Data.AppDbContext db) =>
 {
     var client = await db.Clients.FindAsync(id);
     return client is null ? Results.NotFound() : Results.Ok(client);
 });
 
 // CRIAR CLIENTE
-app.MapPost("/api/clients", async (Client c, AppDbContext db) =>
+app.MapPost("/api/clients", async (Client c, BarberShop.Api.Data.AppDbContext db) =>
 {
     db.Clients.Add(c);
     await db.SaveChangesAsync();
@@ -60,7 +61,7 @@ app.MapPost("/api/clients", async (Client c, AppDbContext db) =>
 });
 
 // ATUALIZAR CLIENTE
-app.MapPut("/api/clients/{id}", async (int id, Client input, AppDbContext db) =>
+app.MapPut("/api/clients/{id}", async (int id, Client input, BarberShop.Api.Data.AppDbContext db) =>
 {
     var client = await db.Clients.FindAsync(id);
     if (client is null) return Results.NotFound();
@@ -73,7 +74,7 @@ app.MapPut("/api/clients/{id}", async (int id, Client input, AppDbContext db) =>
 });
 
 // DELETAR CLIENTE
-app.MapDelete("/api/clients/{id}", async (int id, AppDbContext db) =>
+app.MapDelete("/api/clients/{id}", async (int id, BarberShop.Api.Data.AppDbContext db) =>
 {
     var client = await db.Clients.FindAsync(id);
     if (client is null) return Results.NotFound();
@@ -88,18 +89,18 @@ app.MapDelete("/api/clients/{id}", async (int id, AppDbContext db) =>
 // =========================================
 
 // LISTAR FUNCIONÁRIOS
-app.MapGet("/api/employers", async (AppDbContext db) =>
+app.MapGet("/api/employers", async (BarberShop.Api.Data.AppDbContext db) =>
     Results.Ok(await db.Employers.ToListAsync()));
 
 // DETALHAR FUNCIONÁRIO POR ID
-app.MapGet("/api/employers/{id}", async (int id, AppDbContext db) =>
+app.MapGet("/api/employers/{id}", async (int id, BarberShop.Api.Data.AppDbContext db) =>
 {
     var emp = await db.Employers.FindAsync(id);
     return emp is null ? Results.NotFound() : Results.Ok(emp);
 });
 
 // CRIAR FUNCIONÁRIO
-app.MapPost("/api/employers", async (Employer e, AppDbContext db) =>
+app.MapPost("/api/employers", async (Employer e, BarberShop.Api.Data.AppDbContext db) =>
 {
     db.Employers.Add(e);
     await db.SaveChangesAsync();
@@ -107,7 +108,7 @@ app.MapPost("/api/employers", async (Employer e, AppDbContext db) =>
 });
 
 // ATUALIZAR FUNCIONÁRIO
-app.MapPut("/api/employers/{id}", async (int id, Employer input, AppDbContext db) =>
+app.MapPut("/api/employers/{id}", async (int id, Employer input, BarberShop.Api.Data.AppDbContext db) =>
 {
     var emp = await db.Employers.FindAsync(id);
     if (emp is null) return Results.NotFound();
@@ -120,7 +121,7 @@ app.MapPut("/api/employers/{id}", async (int id, Employer input, AppDbContext db
 });
 
 // DELETAR FUNCIONÁRIO
-app.MapDelete("/api/employers/{id}", async (int id, AppDbContext db) =>
+app.MapDelete("/api/employers/{id}", async (int id, BarberShop.Api.Data.AppDbContext db) =>
 {
     var emp = await db.Employers.FindAsync(id);
     if (emp is null) return Results.NotFound();
@@ -134,12 +135,29 @@ app.MapDelete("/api/employers/{id}", async (int id, AppDbContext db) =>
 // ===== CRUD: SCHEDULE ====================
 // =========================================
 
-// LISTAR AGENDAMENTOS
-app.MapGet("/api/schedules", async (AppDbContext db) =>
-    Results.Ok(await db.Schedules.ToListAsync()));
+// LISTAR AGENDAMENTOS (com nomes do cliente e do funcionário)
+app.MapGet("/api/schedules", async (BarberShop.Api.Data.AppDbContext db) =>
+{
+    var list = await (from s in db.Schedules
+                      join c in db.Clients on s.Id_Cliente equals c.Id
+                      join e in db.Employers on s.Id_Funcionario equals e.Id
+                      select new {
+                          id = s.Id,
+                          id_Cliente = s.Id_Cliente,
+                          id_Funcionario = s.Id_Funcionario,
+                          servico = s.Servico,
+                          // camelCase field for the date
+                          dataAgendamento = s.Data_Agendamento,
+                          // camelCase names for frontend consistency
+                          clientName = c.Nome_Cliente,
+                          employerName = e.Nome_Funcionario
+                      }).ToListAsync();
+
+    return Results.Ok(list);
+});
 
 // CRIAR AGENDAMENTO
-app.MapPost("/api/schedules", async (Schedule s, AppDbContext db) =>
+app.MapPost("/api/schedules", async (Schedule s, BarberShop.Api.Data.AppDbContext db) =>
 {
     // Validação: cliente e funcionário devem existir
     var clientExists = await db.Clients.AnyAsync(c => c.Id == s.Id_Cliente);
@@ -154,7 +172,7 @@ app.MapPost("/api/schedules", async (Schedule s, AppDbContext db) =>
 });
 
 // DELETAR AGENDAMENTO
-app.MapDelete("/api/schedules/{id}", async (int id, AppDbContext db) =>
+app.MapDelete("/api/schedules/{id}", async (int id, BarberShop.Api.Data.AppDbContext db) =>
 {
     var sched = await db.Schedules.FindAsync(id);
     if (sched is null) return Results.NotFound();
@@ -163,5 +181,45 @@ app.MapDelete("/api/schedules/{id}", async (int id, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
+
+// Durante desenvolvimento, popular dados de exemplo se o banco estiver vazio.
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<BarberShop.Api.Data.AppDbContext>();
+
+    // Se não houver agendamentos, garanta pelo menos um (reutiliza client/employer existentes ou cria novos)
+    if (!db.Schedules.Any())
+    {
+        // tenta reaproveitar um client e um employer já existentes
+        var client = db.Clients.FirstOrDefault();
+        var employer = db.Employers.FirstOrDefault();
+
+        if (client is null)
+        {
+            client = new Client { Nome_Cliente = "Cliente Exemplo", Telefone_Celular = "99999-0000" };
+            db.Clients.Add(client);
+            db.SaveChanges();
+        }
+
+        if (employer is null)
+        {
+            employer = new Employer { Nome_Funcionario = "Barbeiro Exemplo", Cargo_Funcionario = "Barbeiro" };
+            db.Employers.Add(employer);
+            db.SaveChanges();
+        }
+
+        var schedule = new Schedule
+        {
+            Id_Cliente = client.Id,
+            Id_Funcionario = employer.Id,
+            Servico = "Corte de teste",
+            Data_Agendamento = DateTime.Now.AddDays(1)
+        };
+
+        db.Schedules.Add(schedule);
+        db.SaveChanges();
+    }
+}
 
 app.Run();
