@@ -74,9 +74,6 @@ const Employers = ({ employers, setEmployers, onDataUpdate }) => {
     <div className="card">
       <div className="card-header">
         <h2 className="card-title">Funcionários</h2>
-        <div className="actions">
-          <button className="btn btn-primary" onClick={resetForm}>Novo Funcionário</button>
-        </div>
       </div>
 
       {status.message && (

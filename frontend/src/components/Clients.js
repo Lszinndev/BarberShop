@@ -79,11 +79,6 @@ const Clients = ({ clients, setClients, onDataUpdate }) => {
     <div className="card">
       <div className="card-header">
         <h2 className="card-title">Clientes</h2>
-        <div className="actions">
-          <button className="btn btn-primary" onClick={resetForm}>
-            Novo Cliente
-          </button>
-        </div>
       </div>
 
       {status.message && (

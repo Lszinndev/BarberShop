@@ -2,10 +2,20 @@ import React, { useState } from 'react';
 import { api } from '../services/api';
 
 const Schedule = ({ schedules, clients = [], employers = [], onDataUpdate }) => {
+  // Lista de serviços (pode ser expandida conforme necessidade)
+  const services = [
+    'Corte de Cabelo',
+    'Barba',
+    'Corte + Barba',
+    'Sobrancelha',
+    'Corte Infantil',
+    'Lavagem'
+  ];
+
   const [form, setForm] = useState({
     id_Cliente: clients.length ? clients[0].id : '',
     id_Funcionario: employers.length ? employers[0].id : '',
-    servico: '',
+    servico: services[0] || '',
     data_Agendamento: ''
   });
   const [loading, setLoading] = useState(false);
@@ -108,14 +118,17 @@ const Schedule = ({ schedules, clients = [], employers = [], onDataUpdate }) => 
 
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem' }}>Serviço:</label>
-              <input
-                className="form-input"
+              <select
+                className="form-select"
                 name="servico"
                 value={form.servico}
                 onChange={handleChange}
-                placeholder="Ex: Corte de Cabelo"
                 required
-              />
+              >
+                {services.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
             </div>
 
             <div>
