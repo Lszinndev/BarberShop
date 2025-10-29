@@ -525,3 +525,29 @@ body {
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
 }
+
+/* Footer */
+.app-footer {
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  color: var(--muted-color);
+  background: transparent;
+  border-top: 1px solid var(--panel-border);
+  font-size: 0.9rem;
+}
+
+.footer-link {
+  color: var(--accent-brown);
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 0.35rem;
+}
+
+.footer-emoji {
+  margin-left: 6px;
+}
+
+.footer-link:hover {
+  color: var(--accent-gold);
+  text-decoration: underline;
+}

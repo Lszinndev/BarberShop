@@ -94,6 +94,12 @@ function App() {
           {renderView()}
         </main>
       </div>
+
+      <footer className="app-footer">
+        <div className="footer-inner">
+          desenvolvido por <a href="https://github.com/Lszinndev" target="_blank" rel="noopener noreferrer" className="footer-link">lszinndev <span className="footer-emoji" aria-hidden="true">⚡</span></a>
+        </div>
+      </footer>
     </div>
   );
 }
